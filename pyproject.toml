@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot_plugin_random_stereotypes"
-version = "0.0.3"
+version = "0.1.0"
 description = "基于Nonebot2的发病语录插件"
 authors = ["Ikaros <327209194@qq.com>"]
 license = "MIT"
