@@ -1,0 +1,18 @@
+name: "投稿"
+description: 投稿发病语录
+title: "[投稿] {简单描述}"
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: texts
+    attributes:
+      label: 发病正文
+      description: 直接粘贴就好🌶（一行一个）
+    validations:
+      required: true
+
+  - type: textarea
+    id: origin
+    attributes:
+      label: 文本来源
+      description: 以上发病文本的来源链接
