@@ -1,13 +1,12 @@
 import random
-
-from nonebot import on_command
+from nonebot.params import Depends
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg, Arg
 from nonebot.plugin import PluginMetadata
 
 from .data import DATA
-from .utils import check_CD
+from .utils import create_matcher, check_CD
 from .config import config
 
 __plugin_meta__ = PluginMetadata(
@@ -16,18 +15,10 @@ __plugin_meta__ = PluginMetadata(
     usage="命令：发病 [发病对象]\n例如：发病 测试",
 )
 
-cd = config.stereotypes_cd
-aliases = config.stereotypes_aliases
-priority = config.stereotypes_priority
-block = config.stereotypes_block
-
-catch_str = on_command("发病",
-                       aliases=aliases,
-                       priority=priority,
-                       block=block)
+catch_str = create_matcher()
 
 
-@catch_str.handle(parameterless=[check_CD(cd)])
+@catch_str.handle(parameterless=[Depends(check_CD)])
 async def _(matcher: Matcher, arg: Message = CommandArg()):
     if arg.extract_plain_text().strip():
         matcher.set_arg("target", arg)
