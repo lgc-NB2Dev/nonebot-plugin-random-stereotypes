@@ -84,7 +84,14 @@ nb plugin update nonebot_plugin_random_stereotypes
 
 ## 🔧 配置
 
-不需要喵
+|  配置项   |     默认值      |                        说明                         |
+|:------:|:------------:|:-------------------------------------------------:|
+|  stereotypes_cd   |     1800     | 发病次数超过stereotypes_count，则需等待stereotypes_cd秒后才可以发病 |
+|  stereotypes_aliases  | ["发电", "发癫"] |                      可选指令前缀                       |
+| stereotypes_count |      3       |                    可连续发病的最大次数                     |
+| stereotypes_priority |     100      |                       插件优先级                       |
+| stereotypes_block  |     False      |                  是否阻止事件向低优先级插件传递                  |
+
 
 ## 🎉 功能
 
