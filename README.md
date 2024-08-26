@@ -1,197 +1,188 @@
-<div align="center">
-  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo"></a>
-  <br>
-  <p><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/NoneBotPlugin.svg" width="240" alt="NoneBotPluginText"></p>
-</div>
+<!-- markdownlint-disable MD031 MD033 MD036 MD041 -->
 
 <div align="center">
 
-# nonebot_plugin_random_stereotypes
-
-_✨ NoneBot 发病语录 ✨_
-
-
-<a href="https://github.com/Ikaros-521/nonebot_plugin_random_stereotypes/stargazers">
-    <img alt="GitHub stars" src="https://img.shields.io/github/stars/Ikaros-521/nonebot_plugin_random_stereotypes?color=%09%2300BFFF&style=flat-square">
+<a href="https://v2.nonebot.dev/store">
+  <img src="https://raw.githubusercontent.com/A-kirami/nonebot-plugin-template/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo">
 </a>
-<a href="https://github.com/Ikaros-521/nonebot_plugin_random_stereotypes/issues">
-    <img alt="GitHub issues" src="https://img.shields.io/github/issues/Ikaros-521/nonebot_plugin_random_stereotypes?color=Emerald%20green&style=flat-square">
+
+<p>
+  <img src="https://raw.githubusercontent.com/lgc-NB2Dev/readme/main/template/plugin.svg" alt="NoneBotPluginText">
+</p>
+
+# NoneBot-Plugin-Random-Stereotypes
+
+_✨ 发病语录 ✨_
+
+<img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="python">
+<a href="https://pdm.fming.dev">
+  <img src="https://img.shields.io/badge/pdm-managed-blueviolet" alt="pdm-managed">
 </a>
-<a href="https://github.com/Ikaros-521/nonebot_plugin_random_stereotypes/network">
-    <img alt="GitHub forks" src="https://img.shields.io/github/forks/Ikaros-521/nonebot_plugin_random_stereotypes?color=%2300BFFF&style=flat-square">
+<a href="https://wakatime.com/badge/user/b61b0f9a-f40b-4c82-bc51-0a75c67bfccf/project/f4778875-45a4-4688-8e1b-b8c844440abb">
+  <img src="https://wakatime.com/badge/user/b61b0f9a-f40b-4c82-bc51-0a75c67bfccf/project/f4778875-45a4-4688-8e1b-b8c844440abb.svg" alt="wakatime">
+</a>
+
+<br />
+
+<a href="https://pydantic.dev">
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/lgc-NB2Dev/readme/main/template/pyd-v1-or-v2.json" alt="Pydantic Version 1 Or 2" >
 </a>
 <a href="./LICENSE">
-    <img src="https://img.shields.io/github/license/Ikaros-521/nonebot_plugin_random_stereotypes.svg" alt="license">
+  <img src="https://img.shields.io/github/license/Ikaros-521/nonebot_plugin_random_stereotypes.svg" alt="license">
 </a>
-<a href="https://pypi.python.org/pypi/nonebot_plugin_random_stereotypes">
-    <img src="https://img.shields.io/pypi/v/nonebot_plugin_random_stereotypes.svg" alt="pypi">
+<a href="https://pypi.python.org/pypi/nonebot-plugin-random-stereotypes">
+  <img src="https://img.shields.io/pypi/v/nonebot-plugin-random-stereotypes.svg" alt="pypi">
 </a>
-<a href="https://www.python.org">
-    <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="python">
+<a href="https://pypi.python.org/pypi/nonebot-plugin-random-stereotypes">
+  <img src="https://img.shields.io/pypi/dm/nonebot-plugin-random-stereotypes" alt="pypi download">
+</a>
+
+<br />
+
+<a href="https://registry.nonebot.dev/plugin/nonebot-plugin-random-stereotypes:nonebot_plugin_random_stereotypes">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnbbdg.lgc2333.top%2Fplugin%2Fnonebot-plugin-random-stereotypes" alt="NoneBot Registry">
+</a>
+<a href="https://registry.nonebot.dev/plugin/nonebot-plugin-random-stereotypes:nonebot_plugin_random_stereotypes">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnbbdg.lgc2333.top%2Fplugin-adapters%2Fnonebot-plugin-random-stereotypes" alt="Supported Adapters">
 </a>
 
 </div>
 
 ## 📖 介绍
 
-随机返回一条在互联网上收录一些有趣的发病语录（主要针对VTB）  
-如果有需要补充的可以提交issue进行追加，侵删。  
+随机返回一条在互联网上收录一些有趣的发病语录（主要针对 VTB）  
+如果有需要补充的可以提交 issue 进行追加，侵删。
 
-## 💿 安装  
+## 💿 安装
 
-### 1. nb-cli安装（推荐）
+以下提到的方法 任选**其一** 即可
 
-在你bot工程的文件夹下，运行cmd（运行路径要对啊），执行nb命令安装插件，插件配置会自动添加至配置文件  
+<details open>
+<summary>[推荐] 使用 nb-cli 安装</summary>
+在 nonebot2 项目的根目录下打开命令行, 输入以下指令即可安装
 
-```sh
-nb plugin install nonebot_plugin_random_stereotypes
+```bash
+nb plugin install nonebot-plugin-random-stereotypes
 ```
-
-### 2. 本地安装
-
-将项目clone到你的机器人插件下的对应插件目录内（一般为机器人文件夹下的`src/plugins`），然后把`nonebot_plugin_random_stereotypes`文件夹里的内容拷贝至上一级目录即可。  
-clone命令参考（得先装`git`，懂的都懂）：
-
-```sh
-git clone https://github.com/Ikaros-521/nonebot_plugin_random_stereotypes.git
-```
-
-也可以直接下载压缩包到插件目录解压，然后同样提取`nonebot_plugin_random_stereotypes`至上一级目录。  
-目录结构： ```你的bot/src/plugins/nonebot_plugin_random_stereotypes/__init__.py```  
-
-### 3. pip安装
-
-```sh
-pip install nonebot_plugin_random_stereotypes
-```  
-
-打开 nonebot2 项目的 ```bot.py``` 文件, 在其中写入  
-```nonebot.load_plugin('nonebot_plugin_random_stereotypes')```  
-当然，如果是默认nb-cli创建的nonebot2的话，在bot路径```pyproject.toml```的```[tool.nonebot]```的```plugins```中添加```nonebot_plugin_random_stereotypes```即可  
-pyproject.toml配置例如：  
-
-``` toml
-[tool.nonebot]
-plugin_dirs = ["src/plugins"]
-plugins = ["nonebot_plugin_random_stereotypes"]
-```
-
-### 更新版本
-
-```sh
-nb plugin update nonebot_plugin_random_stereotypes
-```
-
-## 🔧 配置
-
-|  配置项   |     默认值      |                        说明                         |
-|:------:|:------------:|:-------------------------------------------------:|
-|  stereotypes_cd   |     1800     | 发病次数超过stereotypes_count，则需等待stereotypes_cd秒后才可以发病 |
-|  stereotypes_aliases  | ["发电", "发癫"] |                      可选指令前缀                       |
-| stereotypes_count |      3       |                    可连续发病的最大次数                     |
-| stereotypes_priority |     100      |                       插件优先级                       |
-| stereotypes_block  |     False      |                  是否阻止事件向低优先级插件传递                  |
-
-
-## 🎉 功能
-
-随机生成下标获取本地`data.py`中的一条语录，凭借传入的字符串返回结果。
-
-## 👉 命令
-
-### /发病
-
-命令结构：```/发病 [发病对象]```  
-例如：```/发病 测试```  
-bot返回内容：  
-`电梯里遇到了测试，她按了八层，呵真会暗示，她八层有点喜欢我`  
-
-## ⚙ 拓展
-
-自定义发病语录，修改`data.py`文件，在数组中添加语句即可，对象名用 `{target_name}` 代替，注意格式！  
-
-## 📝 更新日志
-
-<details>
-<summary>展开/收起</summary>
-
-### 0.0.1
-
-- 插件初次发布  
-
-### 0.0.2
-
-- 追加发病语录数据  
-
-### 0.2.1
-
-- 追加发病语录数据  
 
 </details>
 
-## 🔧 开发环境
+<details>
+<summary>使用包管理器安装</summary>
+在 nonebot2 项目的插件目录下, 打开命令行, 根据你使用的包管理器, 输入相应的安装命令
 
-Nonebot2：2.0.0rc3  
-python：3.8.13  
-操作系统：Windows10（Linux兼容性问题不大）  
-编辑器：VS Code  
+<details>
+<summary>pip</summary>
 
-## 致谢
-
-- [nonebot-plugin-template](https://github.com/A-kirami/nonebot-plugin-template)
-
-## 项目打包上传至pypi
-
-官网：https://pypi.org，注册账号，在系统用户根目录下创建`.pypirc`，配置
-
-```txt
-[distutils] 
-index-servers=pypi 
- 
-[pypi] repository = https://upload.pypi.org/legacy/ 
-username = 用户名 
-password = 密码
+```bash
+pip install nonebot-plugin-random-stereotypes
 ```
 
-### poetry
+</details>
+<details>
+<summary>pdm</summary>
 
-```sh
-# 参考 https://www.freesion.com/article/58051228882/
-# poetry config pypi-token.pypi
-
-# 1、安装poetry
-pip install poetry
-
-# 2、初始化配置文件（根据提示填写）
-poetry init
-
-# 3、微调配置文件pyproject.toml
-
-# 4、运行 poetry install, 可生成 “poetry.lock” 文件（可跳过）
-poetry install
-
-# 5、编译，生成dist
-poetry build
-
-# 6、发布(poetry config pypi-token.pypi 配置token)
-poetry publish
+```bash
+pdm add nonebot-plugin-random-stereotypes
 ```
 
-### twine
+</details>
+<details>
+<summary>poetry</summary>
 
-```sh
-# 参考 https://www.cnblogs.com/danhuai/p/14915042.html
-#创建setup.py文件 填写相关信息
-
-# 1、可以先升级打包工具
-pip install --upgrade setuptools wheel twine
-
-# 2、打包
-python setup.py sdist bdist_wheel
-
-# 3、可以先检查一下包
-twine check dist/*
-
-# 4、上传包到pypi（需输入用户名、密码）
-twine upload dist/*
+```bash
+poetry add nonebot-plugin-random-stereotypes
 ```
+
+</details>
+<details>
+<summary>conda</summary>
+
+```bash
+conda install nonebot-plugin-random-stereotypes
+```
+
+</details>
+
+打开 nonebot2 项目根目录下的 `pyproject.toml` 文件, 在 `[tool.nonebot]` 部分的 `plugins` 项里追加写入
+
+```toml
+[tool.nonebot]
+plugins = [
+    # ...
+    "nonebot_plugin_random_stereotypes"
+]
+```
+
+</details>
+
+## ⚙️ 配置
+
+在 nonebot2 项目的 `.env` 文件中添加下表中的必填配置
+
+|                配置项                | 必填 |       默认值       |                                       说明                                       |
+| :----------------------------------: | :--: | :----------------: | :------------------------------------------------------------------------------: |
+|             **全局配置**             |      |                    |                                                                                  |
+|             `SUPERUSERS`             |  否  |        `[]`        |                  超级用户 ID 列表，本插件中超级用户无视冷却限制                  |
+|             **冷却配置**             |      |                    |                                                                                  |
+|           `STEREOTYPES_CD`           |  否  |       `1800`       |                            触发冷却后的冷却时间（秒）                            |
+|         `STEREOTYPES_COUNT`          |  否  |        `3`         | 在 `STEREOTYPES_COUNT_TIME`（单位秒）中触发超过 `STEREOTYPES_COUNT` 次则触发冷却 |
+|       `STEREOTYPES_COUNT_TIME`       |  否  |       `1800`       |                                       如上                                       |
+|      `STEREOTYPES_PUNISH_COUNT`      |  否  |        `5`         |                 当在冷却中继续触发指令超过此次数将会重置冷却时间                 |
+|      `STEREOTYPES_CD_KEY_TYPE`       |  否  |       `user`       |    冷却时间标识符，可选 `user`（只分用户冷却）或 `session`（分群与用户冷却）     |
+|             **消息配置**             |      |                    |                                                                                  |
+| `STEREOTYPES_SHOW_TRIGGER_USER_NAME` |  否  |       `True`       |                          是否在消息中展示触发的用户昵称                          |
+|             **指令配置**             |      |                    |                                                                                  |
+|        `STEREOTYPES_ALIASES`         |  否  | `["发电", "发癫"]` |                                   附加指令前缀                                   |
+|        `STEREOTYPES_PRIORITY`        |  否  |       `100`        |                                  Matcher 优先级                                  |
+|         `STEREOTYPES_BLOCK`          |  否  |      `False`       |                       是否阻止事件向低优先级 Matcher 传递                        |
+
+## 🎉 使用
+
+![Example](https://raw.githubusercontent.com/Ikaros-521/nonebot_plugin_random_stereotypes/master/assets/QQ20240826-190322.png)
+
+<!--
+## 📞 联系
+
+QQ：3076823485
+Telegram：[@lgc2333](https://t.me/lgc2333)
+吹水群：[1105946125](https://jq.qq.com/?_wv=1027&k=Z3n1MpEp)
+邮箱：<lgc2333@126.com>
+-->
+
+<!--
+## 💡 鸣谢
+
+如果有要鸣谢的人的话
+-->
+
+<!--
+## 💰 赞助
+
+**[赞助我](https://blog.lgc2333.top/donate)**
+
+感谢大家的赞助！你们的赞助将是我继续创作的动力！
+-->
+
+## 📝 更新日志
+
+### 0.3.0
+
+- 重构
+
+### 0.2.1
+
+- 支持获取 At 对象的昵称作为发病对象
+
+### 0.2.0
+
+- 添加命令冷却
+- 追加发病语录数据
+
+### 0.1.0
+
+- 重构
+
+### 0.0.2 ~ 0.0.3
+
+- 追加发病语录数据
