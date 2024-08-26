@@ -1,19 +1,19 @@
 ---
 name: 🙋 问题交流 | Question Report
 about: 在文档或讨论中没有回答的使用问题 | Usage question that isn't answered in docs or discussion
-title: "🙋 问题交流。。。 | [Question] Some question..."
-labels: ["question"]
+title: '🙋 问题交流。。。 | [Question] Some question...'
+labels: ['question']
 ---
 
 ## Question Report
 
-- 搜索打开和关闭的 [GitHub 问题](https://github.com/eryajf/go-ldap-admin/issues)
+- 搜索打开和关闭的 [GitHub 问题](https://github.com/Ikaros-521/nonebot_plugin_random_stereotypes/issues)
 
 请在提交问题之前回答这些问题，谢谢。 | Please answer these questions before submitting them. Thank you.
 
 ### 你使用了哪个版本？ | Which version did you use?
 
-### 您使用的python版本&系统环境？ | Your usage python version & system?
+### 您使用的 python 版本&系统环境？ | Your usage python version & system?
 
 ### 预期行为 | Expected behavior
 
