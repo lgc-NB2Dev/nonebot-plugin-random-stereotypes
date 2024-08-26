@@ -103,13 +103,14 @@ async def extract_target_str(msg: UniMessage) -> Optional[str]:
     return get_display_name_from_info(info)
 
 
-async def prompt_target_name() -> str:
+async def prompt_target_name(pre_tip: bool = True) -> str:
     @waiter(["message"], keep_session=True)
     async def wait_target(msg: UniMsg):
         return msg
 
     m = current_matcher.get()
-    await m.send("请问你要对谁发病呢？可以发送“取消”结束询问")
+    if pre_tip:
+        await m.send("请问你要对谁发病呢？可以发送“取消”结束询问")
     while True:
         arg_msg = await wait_target.wait()
         if not arg_msg:
@@ -127,12 +128,14 @@ async def extract_or_prompt_target_name(arg_msg: Optional[UniMessage] = None) ->
     if not arg_msg:
         return await prompt_target_name()
 
-    with suppress(RejectedException):
+    try:
         if target_name := await extract_target_str(arg_msg):
             return target_name
-
-    m = current_matcher.get()
-    await m.finish("参数无效")
+    except RejectedException:
+        return await prompt_target_name(pre_tip=False)
+    else:
+        m = current_matcher.get()
+        await m.finish("无效参数")
 
 
 def create_matcher():
