@@ -7,18 +7,42 @@ labels: ['question']
 
 ## Question Report
 
-- 搜索打开和关闭的 [GitHub 问题](https://github.com/Ikaros-521/nonebot_plugin_random_stereotypes/issues)
+- 搜索打开和关闭的 [GitHub 问题](https://github.com/lgc-NB2Dev/nonebot-plugin-random-stereotypes/issues)
 
 请在提交问题之前回答这些问题，谢谢。 | Please answer these questions before submitting them. Thank you.
 
-### 你使用了哪个版本？ | Which version did you use?
+### 您使用的插件版本？ | Your plugin version?
 
-### 您使用的 python 版本&系统环境？ | Your usage python version & system?
+```text
+
+```
+
+#### 您使用的 Python 版本 & 系统环境？ | Your python version & operating system info?
+
+```text
+
+```
 
 ### 预期行为 | Expected behavior
 
+```text
+
+```
+
 ### 实际行为 | Actual behavior
+
+```text
+
+```
 
 ### 原因分析（如果可以） | Cause analysis (if possible)
 
+```text
+
+```
+
 ### 问题重现步骤 | Steps to reproduce the problem
+
+```text
+
+```

@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD031 MD033 MD036 MD041 -->
+<!-- markdownlint-disable MD024 MD031 MD033 MD036 MD041 -->
 
 <div align="center">
 
@@ -28,7 +28,7 @@ _✨ 发病语录 ✨_
   <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/lgc-NB2Dev/readme/main/template/pyd-v1-or-v2.json" alt="Pydantic Version 1 Or 2" >
 </a>
 <a href="./LICENSE">
-  <img src="https://img.shields.io/github/license/Ikaros-521/nonebot_plugin_random_stereotypes.svg" alt="license">
+  <img src="https://img.shields.io/github/license/lgc-NB2Dev/nonebot-plugin-random-stereotypes.svg" alt="license">
 </a>
 <a href="https://pypi.python.org/pypi/nonebot-plugin-random-stereotypes">
   <img src="https://img.shields.io/pypi/v/nonebot-plugin-random-stereotypes.svg" alt="pypi">
@@ -139,16 +139,21 @@ plugins = [
 
 ## 🎉 使用
 
-![Example](https://raw.githubusercontent.com/Ikaros-521/nonebot_plugin_random_stereotypes/master/assets/QQ20240826-190322.png)
+![Example](https://raw.githubusercontent.com/lgc-NB2Dev/readme/main/random-stereotypes/QQ20240826-190322.png)
 
-<!--
 ## 📞 联系
+
+### Ikaros
+
+QQ: 327209194
+邮箱：<327209194@qq.com>
+
+### student_2333
 
 QQ：3076823485
 Telegram：[@lgc2333](https://t.me/lgc2333)
 吹水群：[1105946125](https://jq.qq.com/?_wv=1027&k=Z3n1MpEp)
 邮箱：<lgc2333@126.com>
--->
 
 <!--
 ## 💡 鸣谢
@@ -156,13 +161,13 @@ Telegram：[@lgc2333](https://t.me/lgc2333)
 如果有要鸣谢的人的话
 -->
 
-<!--
 ## 💰 赞助
+
+### student_2333
 
 **[赞助我](https://blog.lgc2333.top/donate)**
 
 感谢大家的赞助！你们的赞助将是我继续创作的动力！
--->
 
 ## 📝 更新日志
 

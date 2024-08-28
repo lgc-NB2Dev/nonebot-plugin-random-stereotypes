@@ -15,7 +15,7 @@ __plugin_meta__ = PluginMetadata(
     description="随机返回一条发病语录",
     usage="命令：发病 [发病对象]\n例如：发病 测试",
     type="application",
-    homepage="https://github.com/Ikaros-521/nonebot_plugin_random_stereotypes",
+    homepage="https://github.com/lgc-NB2Dev/nonebot-plugin-random-stereotypes",
     config=ConfigModel,
     supported_adapters=inherit_supported_adapters(
         "nonebot_plugin_waiter",

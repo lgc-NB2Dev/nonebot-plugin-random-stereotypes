@@ -7,14 +7,38 @@ labels: ['bug']
 
 <!-- 请在您提交 bug 之前，回答以下这些问题。 | Please answer these questions before you submit a bug. -->
 
-#### 您使用的版本？ | Your usage version?
+#### 您使用的插件版本？ | Your plugin version?
 
-#### 您使用的 python 版本&系统环境？ | Your usage python version & system?
+```text
+
+```
+
+#### 您使用的 Python 版本 & 系统环境？ | Your python version & operating system info?
+
+```text
+
+```
 
 #### 您使用的场景？ | Your usage scenarios?
 
+```text
+
+```
+
 #### 您做了什么操作？ | What did you do?
+
+```text
+
+```
 
 #### 您遇到了什么问题？ | What are your problems?
 
+```text
+
+```
+
 #### 您期望的结果是怎样的？ | What is your expected outcome?
+
+```text
+
+```
