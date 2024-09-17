@@ -1,14 +1,14 @@
 import asyncio
 import random
 from dataclasses import dataclass
-from typing import Iterable, List, Optional
+from typing import Iterable, List, Optional, cast
 
 from nonebot import logger
-from nonebot_plugin_userinfo import UserInfo
+from nonebot_plugin_userinfo import ImageSource, UserInfo
 
 from ..config import MemeConfig
-from ..utils import get_operator_info
-from .base import BaseMemeGenerator, MemeMetadata
+from ..utils import get_display_name_from_info, get_operator_info
+from .base import BaseMemeGenerator, MemeArgUserInfo, MemeMetadata
 
 
 def calc_need_num(
@@ -140,20 +140,21 @@ class RandomMemeGetter:
         if not target_info.user_avatar:
             raise ValueError("No target user avatar data")
 
-        user_image_tasks = [target_info.user_avatar.get_image()]
+        user_infos = [target_info]
         if data.expected_image_num > 1:
             if not operator_info:
                 operator_info = await get_operator_info()
             if (not operator_info) or (not operator_info.user_avatar):
                 raise ValueError("No operation user avatar data")
 
-            task = operator_info.user_avatar.get_image()
             if data.config.target_first:
-                user_image_tasks.append(task)
+                user_infos.append(operator_info)
             else:
-                user_image_tasks.insert(0, task)
+                user_infos.insert(0, operator_info)
 
-        user_images = await asyncio.gather(*user_image_tasks)
+        user_images = await asyncio.gather(
+            *(cast(ImageSource, x.user_avatar).get_image() for x in user_infos),
+        )
 
         return await self.generator.generate(
             data.config.name,
@@ -162,5 +163,14 @@ class RandomMemeGetter:
                 *(x.read_bytes() for x in data.config.additional_images),
             ],
             data.config.additional_texts,
-            data.config.additional_args,
+            {
+                "user_infos": [
+                    MemeArgUserInfo(
+                        name=get_display_name_from_info(x),
+                        gender=x.user_gender,  # type: ignore
+                    )
+                    for x in user_infos
+                ],
+                **data.config.additional_args,
+            },
         )

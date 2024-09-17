@@ -3,7 +3,11 @@ from typing import Callable, Dict, Optional
 from nonebot import get_driver, logger
 
 from ..config import MemeSource, config
-from .base import BaseMemeGenerator as BaseMemeGenerator, MemeMetadata as MemeMetadata
+from .base import (
+    BaseMemeGenerator as BaseMemeGenerator,
+    MemeArgUserInfo as MemeArgUserInfo,
+    MemeMetadata as MemeMetadata,
+)
 from .random import RandomMemeGetter as RandomMemeGetter
 
 _meme_generator: Optional[BaseMemeGenerator] = None

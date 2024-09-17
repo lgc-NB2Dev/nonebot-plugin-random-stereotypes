@@ -9,7 +9,7 @@ require("nonebot_plugin_userinfo")
 from . import __main__ as __main__
 from .config import ConfigModel
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __plugin_meta__ = PluginMetadata(
     name="发病语录",
     description="随机返回一条发病语录",

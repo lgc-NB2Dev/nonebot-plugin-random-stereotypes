@@ -19,7 +19,7 @@ from .config import CoolDownKeyType, config
 from .cool_down import CoolingDownError, cool_down
 from .data import DATA
 from .meme import get_random_meme_getter
-from .utils import get_operator_info
+from .utils import get_display_name_from_info, get_operator_info
 
 # region cool down wrapper
 
@@ -87,10 +87,6 @@ EXIT_CMDS = {"取消", "退出", "结束", "exit", "e", "quit", "q", "cancel", "
 
 NameInfoOptionalTuple: TypeAlias = Tuple[Optional[str], Optional[UserInfo]]
 NameInfoTuple: TypeAlias = Tuple[str, Optional[UserInfo]]
-
-
-def get_display_name_from_info(info: UserInfo) -> str:
-    return info.user_displayname or info.user_name
 
 
 async def extract_target_info(msg: UniMessage) -> Optional[UserInfo]:
