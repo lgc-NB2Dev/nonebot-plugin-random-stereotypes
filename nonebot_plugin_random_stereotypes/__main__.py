@@ -1,11 +1,12 @@
 import random
 from contextlib import asynccontextmanager, suppress
 from datetime import timedelta
-from typing import Awaitable, Callable, Dict, Optional
+from typing import Awaitable, Callable, Dict, Optional, Tuple
+from typing_extensions import TypeAlias
 
 from cookit import format_timedelta
-from nonebot import on_command
-from nonebot.adapters import Bot as BaseBot, Event as BaseEvent, Message as BaseMessage
+from nonebot import logger, on_command
+from nonebot.adapters import Message as BaseMessage
 from nonebot.exception import RejectedException
 from nonebot.matcher import current_bot, current_event, current_matcher
 from nonebot.params import CommandArg
@@ -17,6 +18,8 @@ from nonebot_plugin_waiter import waiter
 from .config import CoolDownKeyType, config
 from .cool_down import CoolingDownError, cool_down
 from .data import DATA
+from .meme import get_random_meme_getter
+from .utils import get_operator_info
 
 # region cool down wrapper
 
@@ -82,28 +85,38 @@ async def cool_down_tip_ctx(key: Optional[str] = None):
 
 EXIT_CMDS = {"取消", "退出", "结束", "exit", "e", "quit", "q", "cancel", "c", "0"}
 
+NameInfoOptionalTuple: TypeAlias = Tuple[Optional[str], Optional[UserInfo]]
+NameInfoTuple: TypeAlias = Tuple[str, Optional[UserInfo]]
+
 
 def get_display_name_from_info(info: UserInfo) -> str:
     return info.user_displayname or info.user_name
 
 
-async def extract_target_str(msg: UniMessage) -> Optional[str]:
+async def extract_target_info(msg: UniMessage) -> Optional[UserInfo]:
     m = current_matcher.get()
 
     if not msg.has(At):
-        return msg.extract_plain_text().strip() or None
+        return None
 
     if (at := msg[At, 0]).flag != "user":
         await m.reject("您所 At 的对象不是用户，请重新发送")
 
     info = await get_user_info(current_bot.get(), current_event.get(), at.target)
     if not info:
-        await m.reject("无法获取 At 对象的昵称，请重新发送")
+        await m.reject("无法获取 At 对象信息，请重新发送")
 
-    return get_display_name_from_info(info)
+    return info
 
 
-async def prompt_target_name(pre_tip: bool = True) -> str:
+async def extract_target_name_info(msg: UniMessage) -> NameInfoOptionalTuple:
+    info = await extract_target_info(msg)
+    if info:
+        return get_display_name_from_info(info), info
+    return (msg.extract_plain_text().strip() or None), None
+
+
+async def prompt_target_name_info(pre_tip: bool = True) -> NameInfoTuple:
     @waiter(["message"], keep_session=True)
     async def wait_target(msg: UniMsg):
         return msg
@@ -118,21 +131,24 @@ async def prompt_target_name(pre_tip: bool = True) -> str:
         if arg_msg.extract_plain_text().strip().lower() in EXIT_CMDS:
             await m.finish("已退出询问")
         with suppress(RejectedException):
-            target_name = await extract_target_str(arg_msg)
+            target_name, info = await extract_target_name_info(arg_msg)
             if target_name:
-                return target_name
+                return target_name, info
             await m.finish("无效消息，退出询问")
 
 
-async def extract_or_prompt_target_name(arg_msg: Optional[UniMessage] = None) -> str:  # noqa: RET503: NoReturn
+async def extract_or_prompt_target(
+    arg_msg: Optional[UniMessage] = None,
+) -> NameInfoTuple:  # noqa: RET503: NoReturn
     if not arg_msg:
-        return await prompt_target_name()
+        return await prompt_target_name_info()
 
     try:
-        if target_name := await extract_target_str(arg_msg):
-            return target_name
+        target_name, info = await extract_target_name_info(arg_msg)
+        if target_name:
+            return target_name, info
     except RejectedException:
-        return await prompt_target_name(pre_tip=False)
+        return await prompt_target_name_info(pre_tip=False)
     else:
         m = current_matcher.get()
         await m.finish("无效参数")
@@ -151,21 +167,32 @@ cmd_stereotypes = create_matcher()
 
 
 @cmd_stereotypes.handle()
-async def _(
-    bot: BaseBot,
-    ev: BaseEvent,
-    arg_base_msg: BaseMessage = CommandArg(),
-):
+async def _(arg_base_msg: BaseMessage = CommandArg()):
     async with cool_down_tip_ctx():
-        target_name = await extract_or_prompt_target_name(
+        target_name, target_info = await extract_or_prompt_target(
             await UniMessage.generate(message=arg_base_msg) if arg_base_msg else None,
         )
+
         msg = UniMessage.text(random.choice(DATA).format(target_name=target_name))
+
+        trigger_user_info = None
         if config.stereotypes_show_trigger_user_name and (
-            trigger_user_info := await get_user_info(bot, ev, ev.get_user_id())
+            trigger_user_info := await get_operator_info()
         ):
             trigger_user_name = get_display_name_from_info(trigger_user_info)
             msg.insert(0, Text(f"{trigger_user_name}说：\n----------\n"))
+
+        if config.stereotypes_enable_meme and target_info:
+            try:
+                meme = await get_random_meme_getter().gen_from_ev(
+                    target_info,
+                    trigger_user_info,
+                )
+            except Exception:
+                logger.exception("Failed to generate meme")
+            else:
+                msg += UniMessage.image(raw=meme)
+
         # do not use finish here otherwise will break cool down
         await msg.send(reply_to=True)
 

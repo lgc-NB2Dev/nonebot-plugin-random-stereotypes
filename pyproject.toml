@@ -12,10 +12,14 @@ dependencies = [
     "nonebot-plugin-alconna>=0.52.1",
     "nonebot-plugin-userinfo>=0.2.6",
     "nonebot-plugin-waiter>=0.7.1",
-    "cookit>=0.8.0",
+    "cookit[pyd]>=0.8.1",
 ]
 license = { text = "MIT" }
 readme = "README.md"
+
+[project.optional-dependencies]
+meme = ["meme-generator>=0.1.4"]
+meme-api = ["nonebot-plugin-memes-api>=0.4.11"]
 
 [project.urls]
 homepage = "https://github.com/lgc-NB2Dev/nonebot-plugin-random-stereotypes"
