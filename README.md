@@ -146,18 +146,21 @@ plugins = [
 Meme 功能默认启用，但是当没有可用数据源或初始化时遇到问题将会自动禁用  
 当指令参数为 At 对象时才会触发此功能
 
-#### `embed` 数据源配置
+#### 数据源相关
 
-安装 [`meme-generator`](https://github.com/MeetWq/meme-generator)（或 [`nonebot-plugin-memes`](https://github.com/noneplugin/nonebot-plugin-memes)）即可使用
+当数据源为 `auto` 时，插件会尝试依次导入所有可用的数据源的依赖，当导入成功时则使用并停止遍历
 
-#### `api` 数据源配置
+各数据源需求依赖：
 
-先安装 [`nonebot-plugin-memes-api`](https://github.com/noneplugin/nonebot-plugin-memes-api)  
-安装后请按照其配置文档配置好 [`MEME_GENERATOR_BASE_URL`](https://github.com/noneplugin/nonebot-plugin-memes-api#meme_generator_base_url) 后即可使用
+- `embed`:  
+  安装 [`meme-generator`](https://github.com/MeetWq/meme-generator)（或 [`nonebot-plugin-memes`](https://github.com/noneplugin/nonebot-plugin-memes)）即可使用
+- `api`:  
+  先安装 [`nonebot-plugin-memes-api`](https://github.com/noneplugin/nonebot-plugin-memes-api)  
+  安装后请按照其配置文档配置好 [`MEME_GENERATOR_BASE_URL`](https://github.com/noneplugin/nonebot-plugin-memes-api#meme_generator_base_url) 后即可使用
 
 #### 表情包列表配置（`STEREOTYPES_MEMES`）
 
-本配置项为一个字符串或 `MemeConfig` 列表，当元素为字符串时会自动转换为有默认配置的 `MemeConfig`
+本配置项为以字符串或 `MemeConfig` 为元素的列表，当列表中某元素为字符串时其会自动转换为有默认配置的 `MemeConfig`
 
 `MemeConfig` 包含以下字段：
 
@@ -199,14 +202,14 @@ STEREOTYPES_MEMES='
 
 ### Ikaros
 
-QQ: 327209194
+QQ: 327209194  
 邮箱：<327209194@qq.com>
 
 ### student_2333
 
-QQ：3076823485
-Telegram：[@lgc2333](https://t.me/lgc2333)
-吹水群：[1105946125](https://jq.qq.com/?_wv=1027&k=Z3n1MpEp)
+QQ：3076823485  
+Telegram：[@lgc2333](https://t.me/lgc2333)  
+吹水群：[1105946125](https://jq.qq.com/?_wv=1027&k=Z3n1MpEp)  
 邮箱：<lgc2333@126.com>
 
 <!--
