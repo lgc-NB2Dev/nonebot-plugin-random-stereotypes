@@ -18,7 +18,7 @@ license = { text = "MIT" }
 readme = "README.md"
 
 [project.optional-dependencies]
-meme = ["meme-generator>=0.1.4"]
+meme = ["meme-generator>=0.1.8"]
 meme-api = ["nonebot-plugin-memes-api>=0.4.11"]
 
 [project.urls]
