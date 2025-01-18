@@ -4,7 +4,7 @@ description = "基于Nonebot2的发病语录插件"
 dynamic = ["version"]
 authors = [
     { name = "Ikaros", email = "327209194@qq.com" },
-    { name = "student_2333", email = "lgc2333@126.com" },
+    { name = "LgCookie", email = "lgc2333@126.com" },
 ]
 requires-python = "<4.0,>=3.9"
 dependencies = [

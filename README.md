@@ -205,7 +205,7 @@ STEREOTYPES_MEMES='
 QQ: 327209194  
 邮箱：<327209194@qq.com>
 
-### student_2333
+### LgCookie
 
 QQ：3076823485  
 Telegram：[@lgc2333](https://t.me/lgc2333)  
@@ -220,7 +220,7 @@ Telegram：[@lgc2333](https://t.me/lgc2333)
 
 ## 💰 赞助
 
-### student_2333
+### LgCookie
 
 **[赞助我](https://blog.lgc2333.top/donate)**
 
