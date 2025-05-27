@@ -1,14 +1,11 @@
-from nonebot.matcher import current_bot, current_event
-from nonebot_plugin_userinfo import UserInfo, get_user_info
+from typing import Union
+
+from nonebot_plugin_uninfo import Member, User
 
 
-async def get_operator_info():
-    return await get_user_info(
-        current_bot.get(),
-        (ev := current_event.get()),
-        ev.get_user_id(),
-    )
-
-
-def get_display_name_from_info(info: UserInfo) -> str:
-    return info.user_displayname or info.user_name
+def get_display_name_from_info(info: Union["Member", "User"]) -> str:
+    if isinstance(info, Member):
+        if info.nick:
+            return info.nick
+        info = info.user
+    return info.nick or info.name or info.id

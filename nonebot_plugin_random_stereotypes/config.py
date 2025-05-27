@@ -1,6 +1,6 @@
 from enum import auto
 from pathlib import Path
-from typing import Any, Dict, List, Set, Union
+from typing import Any, Union
 
 from cookit import StrEnum
 from cookit.pyd import field_validator, type_validate_python
@@ -22,13 +22,13 @@ class MemeSource(StrEnum):
 class MemeConfig(BaseModel):
     name: str
     target_first: bool = False
-    additional_images: List[Path] = Field(default_factory=list)
-    additional_texts: List[str] = Field(default_factory=list)
-    additional_args: Dict[str, Any] = Field(default_factory=dict)
+    additional_images: list[Path] = Field(default_factory=list)
+    additional_texts: list[str] = Field(default_factory=list)
+    additional_args: dict[str, Any] = Field(default_factory=dict)
 
 
 class ConfigModel(BaseModel):
-    superusers: Set[str]
+    superusers: set[str]
 
     stereotypes_cd: int = 1800
     stereotypes_count: int = 3
@@ -40,7 +40,7 @@ class ConfigModel(BaseModel):
 
     stereotypes_enable_meme: bool = True
     stereotypes_meme_source: MemeSource = MemeSource.AUTO
-    stereotypes_memes: List[MemeConfig] = Field(
+    stereotypes_memes: list[MemeConfig] = Field(
         default_factory=lambda: [
             MemeConfig(name="kiss"),
             MemeConfig(name="bite"),
@@ -49,13 +49,13 @@ class ConfigModel(BaseModel):
         ],
     )
 
-    stereotypes_aliases: Set[str] = {"发电", "发癫"}
+    stereotypes_aliases: set[str] = {"发电", "发癫"}
     stereotypes_priority: int = 100
     stereotypes_block: bool = False
 
     @field_validator("stereotypes_memes", mode="before")
     def _(cls, v: Any):  # noqa: N805
-        validated = type_validate_python(List[Union[MemeConfig, str]], v)
+        validated = type_validate_python(list[Union[MemeConfig, str]], v)
         return [MemeConfig(name=i) if isinstance(i, str) else i for i in validated]
 
 

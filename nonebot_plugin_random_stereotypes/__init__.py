@@ -4,12 +4,12 @@ from nonebot.plugin import PluginMetadata, inherit_supported_adapters, require
 
 require("nonebot_plugin_waiter")
 require("nonebot_plugin_alconna")
-require("nonebot_plugin_userinfo")
+require("nonebot_plugin_uninfo")
 
 from . import __main__ as __main__
 from .config import ConfigModel
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 __plugin_meta__ = PluginMetadata(
     name="发病语录",
     description="随机返回一条发病语录",
@@ -20,7 +20,7 @@ __plugin_meta__ = PluginMetadata(
     supported_adapters=inherit_supported_adapters(
         "nonebot_plugin_waiter",
         "nonebot_plugin_alconna",
-        "nonebot_plugin_userinfo",
+        "nonebot_plugin_uninfo",
     ),
     extra={},
 )

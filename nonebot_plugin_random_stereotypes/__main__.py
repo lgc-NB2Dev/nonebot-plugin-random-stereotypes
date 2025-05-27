@@ -1,7 +1,8 @@
 import random
+from collections.abc import Awaitable
 from contextlib import asynccontextmanager, suppress
 from datetime import timedelta
-from typing import Awaitable, Callable, Dict, Optional, Tuple
+from typing import Callable, Optional
 from typing_extensions import TypeAlias
 
 from cookit import format_timedelta
@@ -12,18 +13,18 @@ from nonebot.matcher import current_bot, current_event, current_matcher
 from nonebot.params import CommandArg
 from nonebot.permission import SuperUser
 from nonebot_plugin_alconna.uniseg import At, Text, UniMessage, UniMsg
-from nonebot_plugin_userinfo import UserInfo, get_user_info
+from nonebot_plugin_uninfo import Interface, Member, QryItrface, Scene, Uninfo
 from nonebot_plugin_waiter import waiter
 
 from .config import CoolDownKeyType, config
 from .cool_down import CoolingDownError, cool_down
 from .data import DATA
 from .meme import get_random_meme_getter
-from .utils import get_display_name_from_info, get_operator_info
+from .utils import get_display_name_from_info
 
 # region cool down wrapper
 
-cool_down_key_getter_dict: Dict[CoolDownKeyType, Callable[[], Awaitable[str]]] = {}
+cool_down_key_getter_dict: dict[CoolDownKeyType, Callable[[], Awaitable[str]]] = {}
 
 
 def cool_down_key_getter(key_type: CoolDownKeyType):
@@ -85,11 +86,15 @@ async def cool_down_tip_ctx(key: Optional[str] = None):
 
 EXIT_CMDS = {"取消", "退出", "结束", "exit", "e", "quit", "q", "cancel", "c", "0"}
 
-NameInfoOptionalTuple: TypeAlias = Tuple[Optional[str], Optional[UserInfo]]
-NameInfoTuple: TypeAlias = Tuple[str, Optional[UserInfo]]
+NameInfoOptionalTuple: TypeAlias = tuple[Optional[str], Optional[Member]]
+NameInfoTuple: TypeAlias = tuple[str, Optional[Member]]
 
 
-async def extract_target_info(msg: UniMessage) -> Optional[UserInfo]:
+async def extract_target_info(
+    itf: Interface,
+    scene: Scene,
+    msg: UniMessage,
+) -> Optional[Member]:
     m = current_matcher.get()
 
     if not msg.has(At):
@@ -98,21 +103,29 @@ async def extract_target_info(msg: UniMessage) -> Optional[UserInfo]:
     if (at := msg[At, 0]).flag != "user":
         await m.reject("您所 At 的对象不是用户，请重新发送")
 
-    info = await get_user_info(current_bot.get(), current_event.get(), at.target)
+    info = await itf.get_member(scene.type, scene.id, at.target)
     if not info:
         await m.reject("无法获取 At 对象信息，请重新发送")
 
     return info
 
 
-async def extract_target_name_info(msg: UniMessage) -> NameInfoOptionalTuple:
-    info = await extract_target_info(msg)
+async def extract_target_name_info(
+    itf: Interface,
+    scene: Scene,
+    msg: UniMessage,
+) -> NameInfoOptionalTuple:
+    info = await extract_target_info(itf, scene, msg)
     if info:
         return get_display_name_from_info(info), info
     return (msg.extract_plain_text().strip() or None), None
 
 
-async def prompt_target_name_info(pre_tip: bool = True) -> NameInfoTuple:
+async def prompt_target_name_info(
+    itf: Interface,
+    scene: Scene,
+    pre_tip: bool = True,
+) -> NameInfoTuple:
     @waiter(["message"], keep_session=True)
     async def wait_target(msg: UniMsg):
         return msg
@@ -127,24 +140,26 @@ async def prompt_target_name_info(pre_tip: bool = True) -> NameInfoTuple:
         if arg_msg.extract_plain_text().strip().lower() in EXIT_CMDS:
             await m.finish("已退出询问")
         with suppress(RejectedException):
-            target_name, info = await extract_target_name_info(arg_msg)
+            target_name, info = await extract_target_name_info(itf, scene, arg_msg)
             if target_name:
                 return target_name, info
             await m.finish("无效消息，退出询问")
 
 
 async def extract_or_prompt_target(
+    itf: Interface,
+    scene: Scene,
     arg_msg: Optional[UniMessage] = None,
 ) -> NameInfoTuple:  # noqa: RET503: NoReturn
     if not arg_msg:
-        return await prompt_target_name_info()
+        return await prompt_target_name_info(itf, scene)
 
     try:
-        target_name, info = await extract_target_name_info(arg_msg)
+        target_name, info = await extract_target_name_info(itf, scene, arg_msg)
         if target_name:
             return target_name, info
     except RejectedException:
-        return await prompt_target_name_info(pre_tip=False)
+        return await prompt_target_name_info(itf, scene, pre_tip=False)
     else:
         m = current_matcher.get()
         await m.finish("无效参数")
@@ -163,26 +178,29 @@ cmd_stereotypes = create_matcher()
 
 
 @cmd_stereotypes.handle()
-async def _(arg_base_msg: BaseMessage = CommandArg()):
+async def _(
+    itf: QryItrface,
+    ss: Uninfo,
+    arg_base_msg: BaseMessage = CommandArg(),
+):
     async with cool_down_tip_ctx():
-        target_name, target_info = await extract_or_prompt_target(
-            await UniMessage.generate(message=arg_base_msg) if arg_base_msg else None,
+        arg_msg = (
+            await UniMessage.generate(message=arg_base_msg) if arg_base_msg else None
         )
+        tgt_name, tgt_info = await extract_or_prompt_target(itf, ss.scene, arg_msg)
 
-        msg = UniMessage.text(random.choice(DATA).format(target_name=target_name))
+        msg = UniMessage.text(random.choice(DATA).format(target_name=tgt_name))
 
-        trigger_user_info = None
-        if config.stereotypes_show_trigger_user_name and (
-            trigger_user_info := await get_operator_info()
-        ):
-            trigger_user_name = get_display_name_from_info(trigger_user_info)
+        operator = ss.member or ss.user
+        if config.stereotypes_show_trigger_user_name:
+            trigger_user_name = get_display_name_from_info(operator)
             msg.insert(0, Text(f"{trigger_user_name}说：\n----------\n"))
 
-        if config.stereotypes_enable_meme and target_info:
+        if config.stereotypes_enable_meme and tgt_info:
             try:
                 meme = await get_random_meme_getter().gen_from_ev(
-                    target_info,
-                    trigger_user_info,
+                    tgt_info,
+                    ss.member,
                 )
             except Exception:
                 logger.exception("Failed to generate meme")

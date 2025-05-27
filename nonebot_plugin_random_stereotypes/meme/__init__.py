@@ -1,20 +1,16 @@
-from typing import Callable, Dict, Optional
+from typing import Callable, Optional
 
 from nonebot import get_driver, logger
 
 from ..config import MemeSource, config
-from .base import (
-    BaseMemeGenerator as BaseMemeGenerator,
-    MemeArgUserInfo as MemeArgUserInfo,
-    MemeMetadata as MemeMetadata,
-)
+from .base import BaseMemeGenerator as BaseMemeGenerator, MemeMetadata as MemeMetadata
 from .random import RandomMemeGetter as RandomMemeGetter
 
 _meme_generator: Optional[BaseMemeGenerator] = None
 _random_meme_getter: Optional[RandomMemeGetter] = None
 
 
-generator_source_func_map: Dict[MemeSource, Callable[[], BaseMemeGenerator]] = {}
+generator_source_func_map: dict[MemeSource, Callable[[], BaseMemeGenerator]] = {}
 
 
 def generator_source(source: MemeSource):

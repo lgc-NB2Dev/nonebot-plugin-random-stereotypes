@@ -2,7 +2,7 @@ import time
 from collections import defaultdict, deque
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Deque, Dict, Optional
+from typing import Optional
 
 from .config import config
 
@@ -24,10 +24,10 @@ class CoolDownManager:
     punish_query_count: int
 
     def __post_init__(self):
-        self.cool_times: Dict[str, Deque[float]] = defaultdict(
+        self.cool_times: dict[str, deque[float]] = defaultdict(
             lambda: deque(maxlen=self.punish_query_count),
         )
-        self.queried_counts_when_cooling: Dict[str, int] = defaultdict(lambda: 0)
+        self.queried_counts_when_cooling: dict[str, int] = defaultdict(lambda: 0)
 
     def append(self, key: str):
         now = time.time()
@@ -41,7 +41,7 @@ class CoolDownManager:
     def check_time_left_only(self, key: str) -> Optional[float]:
         if (
             (key not in self.cool_times)
-            or (len((deq := self.cool_times[key])) < self.cool_down_query_count)
+            or (len(deq := self.cool_times[key]) < self.cool_down_query_count)
             or (deq[-1] - deq[0] > self.cool_down_query_count_time)
         ):
             return None

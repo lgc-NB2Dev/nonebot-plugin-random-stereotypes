@@ -1,14 +1,17 @@
 import asyncio
 import random
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable, List, Optional, cast
+from typing import Optional, cast
 
 from nonebot import logger
-from nonebot_plugin_userinfo import ImageSource, UserInfo
+from nonebot.drivers import Request
+from nonebot.matcher import current_bot
+from nonebot_plugin_uninfo import Member
 
 from ..config import MemeConfig
-from ..utils import get_display_name_from_info, get_operator_info
-from .base import BaseMemeGenerator, MemeArgUserInfo, MemeMetadata
+from ..utils import get_display_name_from_info
+from .base import BaseMemeGenerator, MemeMetadata
 
 
 def calc_need_num(
@@ -62,7 +65,7 @@ class RandomMemeGetter:
         self.generator: BaseMemeGenerator = generator
         self.min_images_expected: int = min_images_expected
         self.max_images_expected: int = max_images_expected
-        self.data: List[RandomMemeGenData] = []
+        self.data: list[RandomMemeGenData] = []
 
     def get_gen_data(self, config: MemeConfig, meme: MemeMetadata) -> RandomMemeGenData:
         def calc_ensure(
@@ -132,19 +135,17 @@ class RandomMemeGetter:
 
     async def gen_from_ev(
         self,
-        target_info: UserInfo,
-        operator_info: Optional[UserInfo] = None,
+        target_info: "Member",
+        operator_info: Optional["Member"] = None,
     ) -> bytes:
         data = self.get()
 
-        if not target_info.user_avatar:
+        if not target_info.user.avatar:
             raise ValueError("No target user avatar data")
 
-        user_infos = [target_info]
+        user_infos: list[Member] = [target_info]
         if data.expected_image_num > 1:
-            if not operator_info:
-                operator_info = await get_operator_info()
-            if (not operator_info) or (not operator_info.user_avatar):
+            if not (operator_info and operator_info.user.avatar):
                 raise ValueError("No operation user avatar data")
 
             if data.config.target_first:
@@ -152,25 +153,39 @@ class RandomMemeGetter:
             else:
                 user_infos.insert(0, operator_info)
 
-        user_images = await asyncio.gather(
-            *(cast(ImageSource, x.user_avatar).get_image() for x in user_infos),
+        adapter = current_bot.get().adapter
+        user_images_resp = await asyncio.gather(
+            *(
+                adapter.request(
+                    Request("GET", cast("str", x.user.avatar)),
+                )
+                for x in user_infos
+            ),
         )
+        user_images = [cast("bytes", x.content) for x in user_images_resp]
+        images = [
+            *(
+                (get_display_name_from_info(x), d)
+                for x, d in zip(user_infos, user_images)
+            ),
+            *(
+                (get_display_name_from_info(target_info), x.read_bytes())
+                for x in data.config.additional_images
+            ),
+        ]
+
+        args = {}
+        if data.meme.has_gender_option:
+            args["gender"] = (
+                target_info.user.gender
+                if target_info.user.gender in {"male", "female"}
+                else "unknown"
+            )
+        args.update(data.config.additional_args)
 
         return await self.generator.generate(
             data.config.name,
-            [
-                *(user_images or []),
-                *(x.read_bytes() for x in data.config.additional_images),
-            ],
+            images,
             data.config.additional_texts,
-            {
-                "user_infos": [
-                    MemeArgUserInfo(
-                        name=get_display_name_from_info(x),
-                        gender=x.user_gender,  # type: ignore
-                    )
-                    for x in user_infos
-                ],
-                **data.config.additional_args,
-            },
+            args,
         )

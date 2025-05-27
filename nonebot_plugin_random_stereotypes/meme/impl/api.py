@@ -1,5 +1,5 @@
 from importlib.util import find_spec
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 from typing_extensions import override
 
 from nonebot import require
@@ -14,7 +14,8 @@ if not find_spec("nonebot_plugin_memes_api"):
 
 require("nonebot_plugin_memes_api")
 
-from nonebot_plugin_memes_api.request import (  # noqa: E402
+from nonebot_plugin_memes_api.api import (  # noqa: E402
+    Image,
     MemeInfo,
     generate_meme,
     get_meme_info,
@@ -26,10 +27,13 @@ class MemeGenerator(BaseMemeGenerator):
     def transform_meme_info(info: MemeInfo) -> MemeMetadata:
         return MemeMetadata(
             name=info.key,
-            min_images=info.params_type.min_images,
-            max_images=info.params_type.max_images,
-            min_texts=info.params_type.min_texts,
-            max_texts=info.params_type.max_texts,
+            min_images=info.params.min_images,
+            max_images=info.params.max_images,
+            min_texts=info.params.min_texts,
+            max_texts=info.params.max_texts,
+            has_gender_option=any(
+                True for x in info.params.options if x.name == "gender"
+            ),
         )
 
     @override
@@ -40,11 +44,16 @@ class MemeGenerator(BaseMemeGenerator):
     async def generate(
         self,
         name: str,
-        images: Optional[List[bytes]] = None,
-        texts: Optional[List[str]] = None,
-        args: Optional[Dict[str, Any]] = None,
+        images: Optional[list[tuple[str, bytes]]] = None,
+        texts: Optional[list[str]] = None,
+        args: Optional[dict[str, Any]] = None,
     ) -> bytes:
-        return await generate_meme(name, images or [], texts or [], args or {})
+        return await generate_meme(
+            name,
+            [Image(n, d) for n, d in images] if images else [],
+            texts or [],
+            args or {},
+        )
 
 
 meme_generator = MemeGenerator()

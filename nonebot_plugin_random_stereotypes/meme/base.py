@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict, List, Literal, Optional, TypedDict
-from typing_extensions import NotRequired
+from typing import Any, Optional
 
 
 @dataclass
@@ -11,11 +10,7 @@ class MemeMetadata:
     max_images: int
     min_texts: int
     max_texts: int
-
-
-class MemeArgUserInfo(TypedDict):
-    name: NotRequired[str]
-    gender: NotRequired[Literal["male", "female", "unknown"]]
+    has_gender_option: bool
 
 
 class BaseMemeGenerator(ABC):
@@ -26,7 +21,7 @@ class BaseMemeGenerator(ABC):
     async def generate(
         self,
         name: str,
-        images: Optional[List[bytes]] = None,
-        texts: Optional[List[str]] = None,
-        args: Optional[Dict[str, Any]] = None,
+        images: Optional[list[tuple[str, bytes]]] = None,
+        texts: Optional[list[str]] = None,
+        args: Optional[dict[str, Any]] = None,
     ) -> bytes: ...
