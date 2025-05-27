@@ -1,8 +1,19 @@
-from typing import Any, Optional
+from typing import Any, Optional, Union
 from typing_extensions import override
 
-from meme_generator import Image, Meme, get_meme
-from nonebot import get_available_plugin_names, get_driver
+from meme_generator import (
+    DeserializeError,
+    Image,
+    ImageAssetMissing,
+    ImageDecodeError,
+    ImageEncodeError,
+    ImageNumberMismatch,
+    Meme,
+    MemeFeedback,
+    TextNumberMismatch,
+    TextOverLength,
+    get_meme,
+)
 
 from ..base import BaseMemeGenerator, MemeMetadata
 
@@ -21,9 +32,49 @@ class MemeGenerator(BaseMemeGenerator):
             ),
         )
 
+    @staticmethod
+    def format_error(
+        e: Union[
+            ImageDecodeError,
+            ImageEncodeError,
+            ImageAssetMissing,
+            DeserializeError,
+            ImageNumberMismatch,
+            TextNumberMismatch,
+            TextOverLength,
+            MemeFeedback,
+        ],
+    ) -> str:
+        if isinstance(e, ImageDecodeError):
+            return f"Image decode error: {e.error}"
+        if isinstance(e, ImageEncodeError):
+            return f"Image encode error: {e.error}"
+        if isinstance(e, ImageAssetMissing):
+            return f"Image asset missing: {e.path}"
+        if isinstance(e, DeserializeError):
+            return f"Deserialize error: {e.error}"
+        if isinstance(e, ImageNumberMismatch):
+            return (
+                f"Image number mismatch: expected between {e.min} and {e.max}, "
+                f"got {e.actual}"
+            )
+        if isinstance(e, TextNumberMismatch):
+            return (
+                f"Text number mismatch: expected between {e.min} and {e.max}, "
+                f"got {e.actual}"
+            )
+        if isinstance(e, TextOverLength):
+            return f"Text over length: '{e.text}'"
+        if isinstance(e, MemeFeedback):
+            return f"Meme feedback: {e.feedback}"
+        return str(e)
+
     @override
     async def get_meme(self, name: str) -> MemeMetadata:
-        return self.transform_meme(get_meme(name))
+        meme = get_meme(name)
+        if not meme:
+            raise ValueError(f"Meme '{name}' not found")
+        return self.transform_meme(meme)
 
     @override
     async def generate(
@@ -40,17 +91,7 @@ class MemeGenerator(BaseMemeGenerator):
         )
         if isinstance(r, bytes):
             return r
-        raise RuntimeError(f"{type(r).__name__}: {r}")
-
-
-if "nonebot_plugin_memes" not in get_available_plugin_names():
-    from meme_generator.resources import check_resources_in_background
-
-    driver = get_driver()
-
-    @driver.on_startup
-    async def _():
-        check_resources_in_background()
+        raise RuntimeError(self.format_error(r))
 
 
 meme_generator = MemeGenerator()

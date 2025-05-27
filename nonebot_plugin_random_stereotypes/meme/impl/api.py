@@ -38,7 +38,10 @@ class MemeGenerator(BaseMemeGenerator):
 
     @override
     async def get_meme(self, name: str) -> MemeMetadata:
-        return self.transform_meme_info(await get_meme_info(name))
+        try:
+            return self.transform_meme_info(await get_meme_info(name))
+        except Exception as e:
+            raise ValueError(f"Meme '{name}' not found") from e
 
     @override
     async def generate(

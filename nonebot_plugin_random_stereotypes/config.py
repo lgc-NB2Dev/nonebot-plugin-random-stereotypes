@@ -43,7 +43,7 @@ class ConfigModel(BaseModel):
     stereotypes_memes: list[MemeConfig] = Field(
         default_factory=lambda: [
             MemeConfig(name="kiss"),
-            MemeConfig(name="bite"),
+            MemeConfig(name="suck"),
             MemeConfig(name="rub"),
             MemeConfig(name="little_angel"),
         ],

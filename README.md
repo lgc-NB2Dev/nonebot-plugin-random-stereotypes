@@ -231,6 +231,7 @@ Telegram：[@lgc2333](https://t.me/lgc2333)
 ### 0.5.0
 
 - 重构适配 meme-generator-rs
+- 换用 `nonebot-plugin-uninfo`
 
 ### 0.4.0
 
