@@ -8,11 +8,11 @@ authors = [
 ]
 requires-python = "<4.0,>=3.9"
 dependencies = [
-    "nonebot2>=2.4.2",
-    "nonebot-plugin-alconna>=0.58.0",
+    "nonebot2>=2.4.3",
+    "nonebot-plugin-alconna>=0.59.4",
     "nonebot-plugin-waiter>=0.8.1",
-    "cookit[pyd]>=0.11.6",
-    "nonebot-plugin-uninfo>=0.7.4",
+    "cookit[pyd]>=0.13.0",
+    "nonebot-plugin-uninfo>=0.9.0",
 ]
 license = { text = "MIT" }
 readme = "README.md"
