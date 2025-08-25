@@ -20,6 +20,7 @@ readme = "README.md"
 [project.optional-dependencies]
 meme = ["meme-generator>=0.2.1"]
 meme-api = ["nonebot-plugin-memes-api>=0.5.1"]
+all = ["nonebot-plugin-random-stereotypes[meme,meme-api]"]
 
 [project.urls]
 homepage = "https://github.com/lgc-NB2Dev/nonebot-plugin-random-stereotypes"
@@ -27,12 +28,8 @@ repository = "https://github.com/lgc-NB2Dev/nonebot-plugin-random-stereotypes"
 documentation = "https://github.com/lgc-NB2Dev/nonebot-plugin-random-stereotypes/blob/master/README.md"
 
 [build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.pdm.build]
-includes = ["nonebot_plugin_random_stereotypes"]
-
-[tool.pdm.version]
-source = "file"
+[tool.hatch.version]
 path = "nonebot_plugin_random_stereotypes/__init__.py"
