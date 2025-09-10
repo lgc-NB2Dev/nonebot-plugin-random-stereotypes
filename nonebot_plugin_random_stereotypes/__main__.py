@@ -184,9 +184,7 @@ async def _(
     arg_base_msg: BaseMessage = CommandArg(),
 ):
     async with cool_down_tip_ctx():
-        arg_msg = (
-            await UniMessage.generate(message=arg_base_msg) if arg_base_msg else None
-        )
+        arg_msg = UniMessage.of(message=arg_base_msg) if arg_base_msg else None
         tgt_name, tgt_info = await extract_or_prompt_target(itf, ss.scene, arg_msg)
 
         msg = UniMessage.text(random.choice(DATA).format(target_name=tgt_name))
